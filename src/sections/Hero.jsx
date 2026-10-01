@@ -27,23 +27,31 @@ function ServiceIcon({ type }) {
   );
 }
 
+function PhoneIcon() {
+  return (
+    <svg viewBox="0 0 24 24" aria-hidden="true">
+      <path d="M7.2 3.5 10 8l-2 2c1.2 2.5 3.4 4.7 6 6l2-2 4.5 2.8c.4.3.6.8.4 1.3-.7 1.8-2.5 2.9-4.4 2.7C9.5 20.1 3.9 14.5 3.2 7.5 3 5.6 4.1 3.8 5.9 3.1c.5-.2 1 0 1.3.4Z" />
+    </svg>
+  );
+}
+
 export default function Hero() {
   const primaryPhone = business.phones[0];
 
   return (
     <section className="hero" id="home">
-      <div className="hero__decor hero__decor--one" aria-hidden="true" />
-      <div className="hero__decor hero__decor--two" aria-hidden="true" />
+      <div className="hero__background" aria-hidden="true">
+        <div className="hero__decor hero__decor--one" />
+        <div className="hero__decor hero__decor--two" />
+        <div className="hero__glow hero__glow--blue" />
+        <div className="hero__glow hero__glow--yellow" />
+      </div>
 
       <div className="container hero__inner">
         <div className="hero__content">
-          <div className="hero__eyebrow">
-            <span className="hero__eyebrowMark">ॐ</span>
-
-            <span>
-              <strong>Om Banna Sa</strong>
-              DTH · LED TV · Solar
-            </span>
+          <div className="hero__availability">
+            <i />
+            Home service available
           </div>
 
           <h1 className="hero__title">
@@ -57,26 +65,28 @@ export default function Hero() {
 
           <p className="hero__description">
             New DTH connection, recharge, repair, LED TV fitting and solar
-            installation — direct service from one local contact.
+            installation — direct service from one trusted local contact.
           </p>
 
           <div className="hero__actions">
             <a className="hero__call" href={primaryPhone.href}>
-              <span className="hero__callIcon" aria-hidden="true">
-                <svg viewBox="0 0 24 24">
-                  <path d="M7.2 3.5 10 8l-2 2c1.2 2.5 3.4 4.7 6 6l2-2 4.5 2.8c.4.3.6.8.4 1.3-.7 1.8-2.5 2.9-4.4 2.7C9.5 20.1 3.9 14.5 3.2 7.5 3 5.6 4.1 3.8 5.9 3.1c.5-.2 1 0 1.3.4Z" />
-                </svg>
+              <span className="hero__callIcon">
+                <PhoneIcon />
               </span>
 
-              <span>
+              <span className="hero__callText">
                 <small>Call for service</small>
-                <strong>{primaryPhone.number}</strong>
+                <strong>{primaryPhone.display ?? primaryPhone.number}</strong>
+              </span>
+
+              <span className="hero__callArrow" aria-hidden="true">
+                ↗
               </span>
             </a>
 
             <a className="hero__servicesButton" href="#services">
-              View all services
-              <span aria-hidden="true">↘</span>
+              <span>View all services</span>
+              <b aria-hidden="true">↓</b>
             </a>
           </div>
 

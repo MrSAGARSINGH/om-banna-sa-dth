@@ -20,6 +20,7 @@ function PhoneIcon() {
 
 export default function Header() {
   const [isOpen, setIsOpen] = useState(false);
+  const [isScrolled, setIsScrolled] = useState(false);
 
   const primaryPhone = business.phones[0];
 
@@ -28,6 +29,10 @@ export default function Header() {
   };
 
   useEffect(() => {
+    const handleScroll = () => {
+      setIsScrolled(window.scrollY > 18);
+    };
+
     const handleEscape = (event) => {
       if (event.key === "Escape") {
         setIsOpen(false);
@@ -40,17 +45,38 @@ export default function Header() {
       }
     };
 
+    handleScroll();
+
+    window.addEventListener("scroll", handleScroll, {
+      passive: true,
+    });
+
     window.addEventListener("keydown", handleEscape);
     window.addEventListener("resize", handleResize);
 
     return () => {
+      window.removeEventListener("scroll", handleScroll);
       window.removeEventListener("keydown", handleEscape);
       window.removeEventListener("resize", handleResize);
     };
   }, []);
 
+  useEffect(() => {
+    if (window.innerWidth <= 820) {
+      document.body.style.overflow = isOpen ? "hidden" : "";
+    }
+
+    return () => {
+      document.body.style.overflow = "";
+    };
+  }, [isOpen]);
+
   return (
-    <header className="header">
+    <header
+      className={`header ${
+        isScrolled ? "header--scrolled" : ""
+      } ${isOpen ? "header--menu-open" : ""}`}
+    >
       <div className="container header__inner">
         <a
           className="header__brand"
@@ -59,12 +85,17 @@ export default function Header() {
           aria-label={`${business.name} home`}
         >
           <span className="header__brandMark">
-            ॐ
+            <span className="header__brandGlow" />
+            <strong>ॐ</strong>
           </span>
 
           <span className="header__brandText">
             <strong>Om Banna Sa</strong>
-            <small>DTH · LED TV · Solar</small>
+
+            <small>
+              <span />
+              DTH · LED TV · Solar
+            </small>
           </span>
         </a>
 
@@ -73,16 +104,26 @@ export default function Header() {
           aria-label="Primary navigation"
         >
           {navItems.map((item) => (
-            <a href={item.href} key={item.href}>
-              {item.label}
+            <a
+              className="header__navLink"
+              href={item.href}
+              key={item.href}
+            >
+              <span>{item.label}</span>
             </a>
           ))}
         </nav>
 
         <div className="header__actions">
+          <div className="header__availability">
+            <i />
+            Service available
+          </div>
+
           <a
             className="header__phone"
             href={primaryPhone.href}
+            aria-label={`Call ${business.name}`}
           >
             <span className="header__phoneIcon">
               <PhoneIcon />
@@ -94,6 +135,13 @@ export default function Header() {
               <strong>
                 {primaryPhone.display ?? primaryPhone.number}
               </strong>
+            </span>
+
+            <span
+              className="header__phoneArrow"
+              aria-hidden="true"
+            >
+              ↗
             </span>
           </a>
 
@@ -121,12 +169,24 @@ export default function Header() {
         }`}
       >
         <div className="container header__mobileInner">
+          <div className="header__mobileTop">
+            <span>
+              <i />
+              Direct local service
+            </span>
+
+            <strong>{business.address}</strong>
+          </div>
+
           <nav aria-label="Mobile navigation">
             {navItems.map((item, index) => (
               <a
                 href={item.href}
                 key={item.href}
                 onClick={closeMenu}
+                style={{
+                  "--menu-index": index,
+                }}
               >
                 <span>
                   {String(index + 1).padStart(2, "0")}
@@ -144,6 +204,8 @@ export default function Header() {
               <span>Direct service contact</span>
 
               <strong>{business.owner}</strong>
+
+              <small>DTH · LED TV · Solar</small>
             </div>
 
             <a
@@ -159,6 +221,8 @@ export default function Header() {
                   {primaryPhone.display ?? primaryPhone.number}
                 </strong>
               </span>
+
+              <b aria-hidden="true">↗</b>
             </a>
           </div>
         </div>
