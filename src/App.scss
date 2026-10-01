@@ -1,0 +1,44 @@
+.setup-page {
+  width: 100%;
+  min-width: 0;
+  min-height: 100svh;
+  overflow: hidden;
+}
+
+.setup-page .container {
+  width: min(1200px, calc(100% - 32px));
+  min-width: 0;
+  margin-inline: auto;
+}
+
+.setup-page__content {
+  width: 100%;
+  min-width: 0;
+  max-width: 760px;
+}
+
+.setup-page__label,
+.setup-page__tagline,
+.setup-page__description,
+.setup-page__owner,
+.setup-page h1 {
+  max-width: 100%;
+  overflow-wrap: anywhere;
+}
+
+.setup-page__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  max-width: 100%;
+}
+
+@media (max-width: 640px) {
+  .setup-page__actions {
+    flex-direction: column;
+  }
+
+  .setup-page__actions .button {
+    width: 100%;
+  }
+}
